@@ -6,9 +6,12 @@ const ora = require('ora')
 const download = require('download-git-repo')
 const tplObj = require(`${__dirname}/../template`)
 
+const install = require('../utils/install')
+
 program
   .usage('<template-name> [project-name]')
 program.parse(process.argv)
+
 // 当没有输入参数的时候给个提示
 if (program.args.length < 1) return program.help()
 
@@ -50,5 +53,18 @@ download (
     console.log(`\n    cd ${projectName} \n`)
 
     //自动安装依赖
+     install({
+      // cwd: path.join(process.cwd(), projectName),
+      cwd: `Vue ./${projectName}`,
+      package:'npm'
+      // package: answer.package,
+    }).then(() => {
+      console.log()
+      console.log('We suggest that you begin by typing:')
+      console.log()
+      console.log(chalk.cyan('  cd'), projectName)
+   
+    })
+
   }
 )
